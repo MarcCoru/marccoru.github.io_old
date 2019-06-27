@@ -1,5 +1,6 @@
 body {
-  background-color:#f4f1f1;
+  background-color:#ffffff; /* #f4f1f1 */
+  color:#000000;
   overflow-x: hidden;
 }
 
@@ -16,24 +17,42 @@ body {
 
 .header-section {
 	padding: 50px 40px;
+  background-color:#005293 ;
+  color: #ffffff;
 }
 
+a {
+  color: #000000;
+}
+
+a:hover {
+  color: #000000;
+}
 
 ul {
 	list-style: none;
 }
 
-ul li {
+.news ul li {
+	font-size: 18px;
+}
+
+.contact ul li {
 	font-size: 22px;
-	color: #808181;
-	margin-bottom: 9px;
 }
 
 ul li span {
-	color: #40424a;
+	color: 	#005293;
 	display: inline-block;
 	min-width: 220px;
 }
+
+
+ul li {
+	color: #000000;
+	margin-bottom: 9px;
+}
+
 
 ul li:last-child {
 	margin-bottom: 0;
@@ -41,4 +60,17 @@ ul li:last-child {
 
 ul li:first-child {
 	margin-top: 15px;
+}
+
+
+.image {
+  margin-top: 50px;
+}
+
+.contact {
+  margin-top: 50px;
+}
+
+.news {
+  margin-top: 50px;
 }
