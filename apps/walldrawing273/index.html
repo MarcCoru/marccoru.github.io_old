@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Wall Drawing 273</title>
+    <meta name="description" content="2D navigation demo" />
+    <meta name="author" content="Henrik Ingo" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script>
+  <script src="p5js/walldrawing273.js"></script>
+
+</head>
+<body class="impress-not-supported">
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress" data-transition-duration="1000">
+
+    <div id="intro" class="step slide">
+        <h1>Wall Drawing 273</h1>
+    </div>
+
+    <div id="wall1" class="step slide">
+        <h1>WALL 1</h1>
+    </div>
+
+    <div id="wall2" class="step slide">
+        <h1>WALL 2</h1>
+
+
+    </div>
+
+    <div id="wall3" class="step slide">
+        <h1>WALL 3</h1>
+    </div>
+
+    <div id="wall4" class="step slide">
+        <h1>WALL 4</h1>
+    </div>
+
+    <div id="wall5" class="step slide">
+        <h1>WALL 5</h1>
+    </div>
+
+    <div id="wall6" class="step slide">
+        <h1>WALL 6</h1>
+
+    </div>
+
+    <div id="wall7" class="step slide">
+        <h1>WALL 7</h1>
+
+    </div>
+
+
+    <!-- Place walls in a circle -->
+    <script>
+    var walls = ["#intro","#wall1","#wall2","#wall3","#wall4","#wall5","#wall6","#wall7"]
+    var radius = 3000
+    var angle = 360./(walls.length)
+
+    for (i = 0; i < walls.length; i++) {
+      wall = walls[i]
+
+      rotate = i*angle
+      x = Math.sin(rotate*(Math.PI/180))*radius
+      y = Math.cos(rotate*(Math.PI/180))*radius
+
+      console.log(x,y, rotate)
+
+      $(wall).attr("data-x",x)
+      $(wall).attr("data-z",y)
+      $(wall).attr("data-rotate-y",rotate)
+      $(wall).attr("data-scale",1)
+
+
+
+    }
+    </script>
+
+
+<script type="text/javascript" src="impress.js"></script>
+
+<script src="p5js/wall1.js"></script>
+<script src="p5js/wall2.js"></script>
+
+
+<script>impress().init();</script>
+</body>
+</html>
