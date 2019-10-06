@@ -20,7 +20,7 @@
 <body>
 <script>
     const width = 960,
-        height = 500,
+        height = 800,
         margin = 40,
         scalepop = d3.scaleSqrt().domain([0, 100000]).range([0.2, 24]),
         scalecountry = d3.scaleOrdinal(d3.schemeCategory20b),
@@ -28,6 +28,10 @@
         .range([width / 2 - height / 2 + margin, width / 2 + height / 2 - margin])
     centery = d3.scaleLinear()
         .range([margin, height - margin]);
+
+    // get updated onmousemove
+    var mouseX;
+    var mouseY;
 
     d3.csv('features.csv', function (cities) {
 
@@ -44,9 +48,28 @@
             .attr("width", width)
             .attr("height", height);
 
+            d3.select('canvas').on('mousemove', function(){
+          		mouseX = d3.event.layerX || d3.event.offsetX;
+          		mouseY = d3.event.layerY || d3.event.offsety;
+
+              let nodes = data.map((d, i) => {
+                  return {
+                      x: d.x,
+                      y: d.y,
+                      r: 6,
+                      color: d.color,
+                      name: d.name,
+                  };
+              });
+
+              draw(canvas, nodes);
+
+          	})
+
+
         const model = new tsnejs.tSNE({
             dim: 2,
-            perplexity: 50,
+            perplexity: 100,
             epsilon: 10,
         });
 
@@ -58,8 +81,8 @@
         const forcetsne = d3.forceSimulation(
           data.map(d => (d.x = width / 2, d.y = height / 2, d))
         )
-            .alphaDecay(0.00005)
-            .alpha(.1)
+            .alphaDecay(0.015)
+            .alpha(1)
             .force('tsne', function (alpha) {
                 // every time you call this, solution gets better
                 model.step();
@@ -71,18 +94,20 @@
                 centery.domain(d3.extent(pos.map(d => d[1])));
 
                 data.forEach((d, i) => {
-                    d.x += 1 * (centerx(pos[i][0]) - d.x);
-                    d.y += 1 * (centery(pos[i][1]) - d.y);
+                    d.x += alpha * (centerx(pos[i][0]) - d.x);
+                    d.y += alpha * (centery(pos[i][1]) - d.y);
                 });
             })
-            .force('collide', d3.forceCollide().radius(d => 4))
+            .force('charge', d3.forceManyBody().strength(10))
+            .force('collide', d3.forceCollide().radius(d => 7))
             .on('tick', function () {
                 let nodes = data.map((d, i) => {
                     return {
                         x: d.x,
                         y: d.y,
-                        r: 4,
+                        r: 6,
                         color: d.color,
+                        name: d.name,
                     };
                 });
 
@@ -93,6 +118,9 @@
         function draw(canvas, nodes) {
             let context = canvas.node().getContext("2d");
             context.clearRect(0, 0, width, width);
+            context.font = "bold 12px Arial";
+            context.textAlign = "center";
+            context.globalAlpha = .85;
 
             for (var i = 0, n = nodes.length; i < n; ++i) {
                 var node = nodes[i];
@@ -102,6 +130,29 @@
                 context.lineWidth = 0.5;
                 context.fillStyle = node.color;
                 context.fill()
+                if (Math.hypot(node.x-mouseX, node.y-mouseY) < node.r) {
+                    dx = .4*(node.x - width/2)
+                    dy = .4*(node.y - height/2)
+
+                    d = Math.hypot(dx, dy)
+                    dx = 100*(dx / d)
+                    dy = 100*(dy / d)
+
+                    context.fillStyle = 'black';
+                    context.fillText(node.name, node.x+dx, node.y+dy);
+                    context.strokeStyle = 'white';
+                    context.strokeText(node.name, node.x+dx, node.y+dy);
+                    context.fill();
+                    context.stroke();
+
+                    context.strokeStyle = "black";
+                    context.moveTo(node.x+dx, node.y+dy);
+                    context.lineTo(node.x,node.y)
+
+                    context.stroke();
+
+                }
+
             }
         }
 
